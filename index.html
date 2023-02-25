@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #canvas {
+            display: block;
+            width: 700px;
+            height: 400px;
+            /*border: 5px solid #afafaf;*/
+            box-shadow: 10px 10px 10px #afafaf;
+        }
+        #clearBtn {
+            background: red;
+            padding: 20px 30px;
+            display: block;
+        }
+        section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+    </style>
+</head>
+<body>
+<section>
+    <canvas id="canvas" width="700" height="400"></canvas>
+    <button id="clearBtn">Clear</button>
+</section>
+
+<script>
+    // Get the canvas element and context
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set the stroke style
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+
+    // Initialize variables
+    let drawing = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    // Event listeners
+    canvas.addEventListener('mousedown', startDraw);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', endDraw);
+    canvas.addEventListener('mouseout', endDraw);
+    document.getElementById('clearBtn').addEventListener('click', clearCanvas);
+
+    // Functions
+    function startDraw(e) {
+        drawing = true;
+        lastX = e.offsetX;
+        lastY = e.offsetY;
+    }
+
+    function draw(e) {
+        if (!drawing) return;
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+        lastX = e.offsetX;
+        lastY = e.offsetY;
+    }
+
+    function endDraw() {
+        drawing = false;
+    }
+
+    function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+</script>
+</body>
+</html>
